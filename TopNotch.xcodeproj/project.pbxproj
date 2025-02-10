@@ -6,8 +6,38 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EAB4C7DE2D5AAA26000CE23F /* TopNotch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAB4C7AF2D5AA7EB000CE23F /* TopNotch.framework */; };
+		EAB4C7DF2D5AAA26000CE23F /* TopNotch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAB4C7AF2D5AA7EB000CE23F /* TopNotch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EAB4C7E02D5AAA26000CE23F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EAB4C7A62D5AA7EB000CE23F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EAB4C7AE2D5AA7EB000CE23F;
+			remoteInfo = TopNotch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EAB4C7E22D5AAA26000CE23F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EAB4C7DF2D5AAA26000CE23F /* TopNotch.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		EAB4C7AF2D5AA7EB000CE23F /* TopNotch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TopNotch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAB4C7C82D5AA990000CE23F /* TopNotchDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TopNotchDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +47,13 @@
 				TopNotch.h,
 			);
 			target = EAB4C7AE2D5AA7EB000CE23F /* TopNotch */;
+		};
+		EAB4C7D92D5AA992000CE23F /* Exceptions for "TopNotchDemo" folder in "TopNotchDemo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = EAB4C7C72D5AA990000CE23F /* TopNotchDemo */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,6 +66,14 @@
 			path = TopNotch;
 			sourceTree = "<group>";
 		};
+		EAB4C7C92D5AA990000CE23F /* TopNotchDemo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB4C7D92D5AA992000CE23F /* Exceptions for "TopNotchDemo" folder in "TopNotchDemo" target */,
+			);
+			path = TopNotchDemo;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +84,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAB4C7C52D5AA990000CE23F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAB4C7DE2D5AAA26000CE23F /* TopNotch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				EAB4C7B12D5AA7EB000CE23F /* TopNotch */,
+				EAB4C7C92D5AA990000CE23F /* TopNotchDemo */,
+				EAB4C7DD2D5AAA26000CE23F /* Frameworks */,
 				EAB4C7B02D5AA7EB000CE23F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +109,16 @@
 			isa = PBXGroup;
 			children = (
 				EAB4C7AF2D5AA7EB000CE23F /* TopNotch.framework */,
+				EAB4C7C82D5AA990000CE23F /* TopNotchDemo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EAB4C7DD2D5AAA26000CE23F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -94,6 +157,30 @@
 			productReference = EAB4C7AF2D5AA7EB000CE23F /* TopNotch.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		EAB4C7C72D5AA990000CE23F /* TopNotchDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAB4C7DA2D5AA992000CE23F /* Build configuration list for PBXNativeTarget "TopNotchDemo" */;
+			buildPhases = (
+				EAB4C7C42D5AA990000CE23F /* Sources */,
+				EAB4C7C52D5AA990000CE23F /* Frameworks */,
+				EAB4C7C62D5AA990000CE23F /* Resources */,
+				EAB4C7E22D5AAA26000CE23F /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EAB4C7E12D5AAA26000CE23F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EAB4C7C92D5AA990000CE23F /* TopNotchDemo */,
+			);
+			name = TopNotchDemo;
+			packageProductDependencies = (
+			);
+			productName = TopNotchDemo;
+			productReference = EAB4C7C82D5AA990000CE23F /* TopNotchDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -101,9 +188,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					EAB4C7AE2D5AA7EB000CE23F = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					EAB4C7C72D5AA990000CE23F = {
 						CreatedOnToolsVersion = 16.1;
 					};
 				};
@@ -123,12 +214,20 @@
 			projectRoot = "";
 			targets = (
 				EAB4C7AE2D5AA7EB000CE23F /* TopNotch */,
+				EAB4C7C72D5AA990000CE23F /* TopNotchDemo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EAB4C7AD2D5AA7EB000CE23F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAB4C7C62D5AA990000CE23F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -145,7 +244,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EAB4C7C42D5AA990000CE23F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EAB4C7E12D5AAA26000CE23F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EAB4C7AE2D5AA7EB000CE23F /* TopNotch */;
+			targetProxy = EAB4C7E02D5AAA26000CE23F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EAB4C7B82D5AA7EB000CE23F /* Debug */ = {
@@ -163,6 +277,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -196,6 +311,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,6 +455,60 @@
 			};
 			name = Release;
 		};
+		EAB4C7DB2D5AA992000CE23F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CG56CG5WCQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TopNotchDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gold.samhenri.TopNotchDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EAB4C7DC2D5AA992000CE23F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CG56CG5WCQ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TopNotchDemo/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = gold.samhenri.TopNotchDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -356,6 +526,15 @@
 			buildConfigurations = (
 				EAB4C7B82D5AA7EB000CE23F /* Debug */,
 				EAB4C7B92D5AA7EB000CE23F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EAB4C7DA2D5AA992000CE23F /* Build configuration list for PBXNativeTarget "TopNotchDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAB4C7DB2D5AA992000CE23F /* Debug */,
+				EAB4C7DC2D5AA992000CE23F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
