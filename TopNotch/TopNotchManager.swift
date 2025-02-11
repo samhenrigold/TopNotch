@@ -58,7 +58,7 @@ public final class TopNotchManager {
     /// Series overrides for devices. Any device whose model identifier begins with the key
     /// will use these settings.
     private let modelSeriesOverrides: [String: (scale: CGFloat, heightFactor: CGFloat, radius: CGFloat)] = [
-        "iPhone13": (scale: 0.99, heightFactor: 1.0, radius: 24), // iPhone 12 series
+        "iPhone13": (scale: 0.95, heightFactor: 1.0, radius: 27), // iPhone 12 series
         "iPhone14": (scale: 0.75, heightFactor: 0.75, radius: 24)  // iPhone 13/14 series
     ]
     
