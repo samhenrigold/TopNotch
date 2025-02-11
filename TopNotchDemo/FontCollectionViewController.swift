@@ -36,14 +36,12 @@ class FontTableViewController: UITableViewController {
                                                     shouldAnimate: true,
                                                     shouldHideForTaskSwitcher: false)
         
-        // Create a custom notch view – here a simple label.
         let notchLabel = UILabel()
         notchLabel.text = "Top Notch!"
         notchLabel.textColor = .white
         notchLabel.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
         notchLabel.textAlignment = .center
         
-        // Enable the TopNotch view with the custom view.
         TopNotchManager.shared.show(customView: notchLabel, with: watermarkConfig)
     }
     

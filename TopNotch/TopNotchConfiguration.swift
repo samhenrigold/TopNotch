@@ -16,7 +16,7 @@ public struct TopNotchConfiguration {
     /// If true, the watermark will hide when the app is about to show the entire screen (e.g. task switcher).
     public var shouldHideForTaskSwitcher: Bool
 
-    public init(animationDuration: TimeInterval = 0.25,
+    public init(animationDuration: TimeInterval = 0.3,
                 shouldAnimate: Bool = true,
                 shouldHideForTaskSwitcher: Bool = true) {
         self.animationDuration = animationDuration
