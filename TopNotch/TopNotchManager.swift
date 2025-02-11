@@ -28,11 +28,8 @@ public final class TopNotchManager {
         return rect
     }()
     
-    /// True if the notch view is visible.
     public private(set) var isNotchVisible: Bool = false
-    /// The exclusion area that was used (if any).
     public private(set) var currentExclusionRect: CGRect = .zero
-    /// If the notch cannot be shown, this property holds a (human‑readable) reason.
     public private(set) var cannotShowReason: String? = nil
 
     // MARK: – Private Properties
@@ -40,8 +37,25 @@ public final class TopNotchManager {
     private var notchView: UIView?
     private var config: TopNotchConfiguration = TopNotchConfiguration()
     private var notchWindow: UIWindow?
-    /// The exclusion rectangle stored when showing; we never update it on rotation.
+    /// The raw exclusion rectangle stored when showing; we do not update it on rotation.
     private var storedExclusionRect: CGRect?
+    
+    // MARK: Model Overrides
+    
+    /// Individual model overrides – leave empty for now (override as needed).
+    /*
+    private let modelOverrides: [String: (scale: CGFloat, heightFactor: CGFloat, radius: CGFloat)] = [
+        // Example:
+        // "iPhoneXX": (scale: 0.80, heightFactor: 0.80, radius: 25)
+    ]
+    */
+    private let modelOverrides: [String: (scale: CGFloat, heightFactor: CGFloat, radius: CGFloat)] = [:]
+    
+    /// Series overrides. Any device whose model identifier begins with the key string will use these settings.
+    private let modelSeriesOverrides: [String: (scale: CGFloat, heightFactor: CGFloat, radius: CGFloat)] = [
+        "iPhone13": (scale: 0.95, heightFactor: 1.0, radius: 27), // iPhone 12 series
+        "iPhone14": (scale: 0.75, heightFactor: 0.75, radius: 24)  // iPhone 13/14 series
+    ]
     
     // MARK: – Orientation‑Locking Container
     
@@ -62,33 +76,29 @@ public final class TopNotchManager {
     
     // MARK: – Public Methods
     
-    /// Shows the TopNotch watermark.
+    /// Shows the notch view using an optional custom view and configuration.
+    ///
     /// - Parameters:
-    ///   - customView: A custom view to use for the notch (if nil, a default view is created).
-    ///   - configuration: A configuration object.
-    ///   - completion: Called when the operation completes.
+    ///   - customView: A custom view to use for the notch. If nil, a default red‑tinted view is used.
+    ///   - configuration: A configuration object controlling animation duration and whether the view should hide for the task switcher.
     public func show(customView: UIView? = nil,
-                     configuration: TopNotchConfiguration = TopNotchConfiguration(),
-                     completion: (() -> Void)? = nil) {
+                     with configuration: TopNotchConfiguration = TopNotchConfiguration()) {
         print("[TopNotchManager] Showing notch view")
         config = configuration
         
-        // Get the exclusion area from the device.
+        // Retrieve the exclusion area.
         let exclusion = TopNotchManager.exclusionRect
-        if exclusion == .zero {
+        guard exclusion != .zero else {
             print("[TopNotchManager] Cannot show notch: No exclusion area detected.")
             cannotShowReason = "No exclusion area detected."
-            hide(completion: completion)
+            hide()
             return
-        } else {
-            print("[TopNotchManager] Exclusion area detected: \(exclusion)")
-            cannotShowReason = nil
         }
-        // Store and expose the exclusion rectangle.
+        cannotShowReason = nil
         storedExclusionRect = exclusion
         currentExclusionRect = exclusion
         
-        // Use the provided custom view or create a default one.
+        // Use the provided custom view or create a default view.
         if let custom = customView {
             print("[TopNotchManager] Using custom notch view")
             notchView = custom
@@ -98,27 +108,26 @@ public final class TopNotchManager {
         }
         notchView?.isUserInteractionEnabled = false
         
-        // Create or update the dedicated top-level window.
+        // Create (or update) the dedicated top‑level window.
         attachNotchViewToWindow()
         
-        // Set the notch view’s initial state and frame (using our stored exclusion rect).
+        // Set initial state and update the frame.
         notchView?.alpha = 0
         updateNotchFrame()
         
-        // Fade it in.
+        // Animate fade‑in.
         UIView.animate(withDuration: config.animationDuration) {
             self.notchView?.alpha = 1.0
         }
         print("[TopNotchManager] Notch view fading in")
         isNotchVisible = true
         
-        // Always update on orientation changes (the container is locked to portrait so the stored rect never shifts).
+        // Register for orientation changes.
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateNotchFrame),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
-        
-        // If our config says so, also hide the notch when the app is about to show the task switcher.
+        // Optionally hide the notch when the task switcher appears.
         if config.shouldHideForTaskSwitcher {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(sceneWillDeactivateNotification(_:)),
@@ -130,12 +139,10 @@ public final class TopNotchManager {
                                                    object: nil)
             print("[TopNotchManager] Observing scene de/activation for task switcher hiding")
         }
-        
-        completion?()
     }
     
-    /// Hides the TopNotch watermark.
-    public func hide(completion: (() -> Void)? = nil) {
+    /// Hides the notch view by fading it out and removing it.
+    public func hide() {
         print("[TopNotchManager] Hiding notch view")
         NotificationCenter.default.removeObserver(self)
         UIView.animate(withDuration: config.animationDuration, animations: {
@@ -144,15 +151,14 @@ public final class TopNotchManager {
             print("[TopNotchManager] Notch view removed from superview")
             self.notchView?.removeFromSuperview()
             self.isNotchVisible = false
-            completion?()
         }
     }
     
     // MARK: – Private Helpers
     
-    /// Creates a default notch view.
+    /// Creates a default notch view with a red tint.
     private func createDefaultNotchView() -> UIView {
-        print("[TopNotchManager] Creating default notch view with red color")
+        print("[TopNotchManager] Creating default notch view with red tint")
         let view = UIView()
         view.backgroundColor = UIColor.red.withAlphaComponent(0.5)
         return view
@@ -162,13 +168,11 @@ public final class TopNotchManager {
     private func attachNotchViewToWindow() {
         if notchWindow == nil {
             print("[TopNotchManager] Creating new UIWindow for notch view")
-            // Use connectedScenes to find an active scene.
             if let windowScene = UIApplication.shared.connectedScenes
                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
                 let window = UIWindow(windowScene: windowScene)
                 window.frame = windowScene.coordinateSpace.bounds
                 window.backgroundColor = .clear
-                // Set a high window level to ensure it stays on top.
                 window.windowLevel = UIWindow.Level.statusBar + 100
                 let containerVC = NoRotationViewController()
                 window.rootViewController = containerVC
@@ -181,7 +185,6 @@ public final class TopNotchManager {
                 print("[TopNotchManager] Warning: No active window scene found")
             }
         }
-        // Remove notchView from any previous superview.
         notchView?.removeFromSuperview()
         if let container = notchWindow?.rootViewController?.view, let view = notchView {
             container.addSubview(view)
@@ -190,21 +193,79 @@ public final class TopNotchManager {
         }
     }
     
-    /// Updates the frame of the notch view.
-    /// Instead of re‑computing the notch rectangle on every rotation, we use the stored value.
+    /// Updates the notch view’s frame using the stored exclusion rectangle and applies model‑specific adjustments.
     @objc public func updateNotchFrame() {
-        if let rect = storedExclusionRect, rect != .zero {
-            notchView?.frame = rect
-            print("[TopNotchManager] Updated notch view frame to: \(rect)")
-        } else {
+        guard let rawRect = storedExclusionRect, rawRect != .zero else {
             notchView?.frame = .zero
             print("[TopNotchManager] Notch frame set to .zero")
+            return
         }
+        
+        let modelId = UIDevice.modelIdentifier
+        var adjustedFrame = rawRect
+        
+        // First check for individual model overrides (if any).
+        if let override = modelOverrides[modelId] {
+            let newWidth = rawRect.width * override.scale
+            let newX = rawRect.origin.x + (rawRect.width - newWidth) / 2
+            let newHeight = rawRect.height * override.heightFactor
+            adjustedFrame = CGRect(x: newX, y: rawRect.origin.y, width: newWidth, height: newHeight)
+            print("[TopNotchManager] Applied individual override for \(modelId): \(adjustedFrame)")
+            applyCornerStyling(with: override.radius, roundBottomOnly: true)
+        }
+        // Otherwise, check for series overrides.
+        else if let seriesOverride = modelSeriesOverrides.first(where: { modelId.hasPrefix($0.key) }) {
+            let override = seriesOverride.value
+            let newWidth = rawRect.width * override.scale
+            let newX = rawRect.origin.x + (rawRect.width - newWidth) / 2
+            let newHeight = rawRect.height * override.heightFactor
+            adjustedFrame = CGRect(x: newX, y: rawRect.origin.y, width: newWidth, height: newHeight)
+            print("[TopNotchManager] Applied series override for \(modelId) (prefix \(seriesOverride.key)): \(adjustedFrame)")
+            applyCornerStyling(with: override.radius, roundBottomOnly: true)
+        }
+        // Otherwise, use default styling.
+        else {
+            adjustedFrame = rawRect
+            // Assuming that if the notch doesn't touch the top, it needs a pill-shaped mask
+            if rawRect.origin.y > 0 {
+                let capsuleRadius = rawRect.height / 2
+                applyCornerStyling(with: capsuleRadius)
+                print("[TopNotchManager] Dynamic island default styling (radius \(capsuleRadius))")
+            } else {
+                applyCornerStyling(with: 21, roundBottomOnly: true)
+                print("[TopNotchManager] Original notch default styling (radius 21)")
+            }
+        }
+        
+        notchView?.frame = adjustedFrame
+        print("[TopNotchManager] Updated notch view frame to: \(adjustedFrame)")
+    }
+    
+    /// Applies corner styling using a CAShapeLayer mask so that the rounded corners aren’t clipped.
+    ///
+    /// - Parameters:
+    ///   - radius: The corner radius to apply.
+    ///   - roundBottomOnly: If true, only the bottom corners are rounded.
+    private func applyCornerStyling(with radius: CGFloat, roundBottomOnly: Bool = false) {
+        guard let view = notchView else { return }
+        // Disable the standard clipping.
+        view.clipsToBounds = false
+        
+        let path: UIBezierPath
+        if roundBottomOnly {
+            path = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: radius, height: radius))
+        } else {
+            path = UIBezierPath(roundedRect: view.bounds, cornerRadius: radius)
+        }
+        
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = view.bounds
+        maskLayer.path = path.cgPath
+        view.layer.mask = maskLayer
     }
     
     // MARK: – Task Switcher Notifications
     
-    /// Called when the scene is about to deactivate (e.g. task switcher invoked).
     @objc private func sceneWillDeactivateNotification(_ notification: Notification) {
         if config.shouldHideForTaskSwitcher && isNotchVisible {
             print("[TopNotchManager] Hiding notch view for task switcher (willDeactivate)")
@@ -214,7 +275,6 @@ public final class TopNotchManager {
         }
     }
     
-    /// Called when the scene did activate (e.g. task switcher dismissed).
     @objc private func sceneDidActivateNotification(_ notification: Notification) {
         if config.shouldHideForTaskSwitcher && isNotchVisible {
             print("[TopNotchManager] Showing notch view after task switcher (didActivate)")

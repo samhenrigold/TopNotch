@@ -36,7 +36,7 @@ class FontTableViewController: UITableViewController {
         
         let watermarkConfig = TopNotchConfiguration(animationDuration: 0.3,
                                                     shouldAnimate: true,
-                                                    shouldHideForTaskSwitcher: true)
+                                                    shouldHideForTaskSwitcher: false)
         
         // Create a custom notch view – here a simple label.
         let notchLabel = UILabel()
@@ -46,7 +46,7 @@ class FontTableViewController: UITableViewController {
         notchLabel.textAlignment = .center
         
         // Enable the TopNotch view with the custom view.
-        TopNotchManager.shared.show(customView: notchLabel, configuration: watermarkConfig)
+        TopNotchManager.shared.show(customView: notchLabel, with: watermarkConfig)
     }
     
     
