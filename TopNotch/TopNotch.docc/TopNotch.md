@@ -13,7 +13,7 @@ It automatically calculates the notch’s exclusion area (using an undocumented 
 > [!WARNING]
 > Because TopNotch relies on undocumented APIs, it may not be App Store safe. Give it a shot though. I dare you.
 
- [![Watch the demo](./TopNotch/TopNotch.docc/Resources/poster.jpg)](./TopNotch/TopNotch.docc/Resources/demo.mp4)
+![Watch the demo](./TopNotch/TopNotch.docc/Resources/demo.mp4)
 
 ## TODO
 - Reduce logging pollution
