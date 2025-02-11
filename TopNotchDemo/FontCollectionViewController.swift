@@ -24,10 +24,8 @@ class FontTableViewController: UITableViewController {
         super.viewDidLoad()
         self.title = "Font Families"
         
-        // Register a basic UITableViewCell.
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "FontCell")
         
-        // Add a nav bar button that opens a modal sheet.
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Show Modal", style: .plain, target: self, action: #selector(showModal))
     }
     

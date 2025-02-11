@@ -6,20 +6,18 @@
 //
 
 import UIKit
-import SwiftUI
 
 public final class TopNotchManager {
 
-    // MARK: – Public API
+    // MARK: Public API
     
     /// A shared instance (singleton).
     public static let shared = TopNotchManager()
     
-    /// Exposes the computed exclusion area (the “notch”) from the screen.
+    /// The computed exclusion area (the “notch”) retrieved via KVC.
     public static var exclusionRect: CGRect = {
         let screen = UIScreen.main
-        // UIScreen._exclusionArea
-        guard let exclusionAreaMethod = screen.value(forKey: "_" + "exclusion" + "Area") as? NSObject,
+        guard let exclusionAreaMethod = screen.value(forKey: "_exclusionArea") as? NSObject,
               let rect = exclusionAreaMethod.value(forKey: "rect") as? CGRect else {
             print("[TopNotchManager] Exclusion area not available; returning .zero")
             return .zero
@@ -32,7 +30,7 @@ public final class TopNotchManager {
     public private(set) var currentExclusionRect: CGRect = .zero
     public private(set) var cannotShowReason: String? = nil
 
-    // MARK: – Private Properties
+    // MARK: Private Properties
     
     private var notchView: UIView?
     private var config: TopNotchConfiguration = TopNotchConfiguration()
@@ -57,7 +55,7 @@ public final class TopNotchManager {
         "iPhone14": (scale: 0.75, heightFactor: 0.75, radius: 24)  // iPhone 13/14 series
     ]
     
-    // MARK: – Orientation‑Locking Container
+    // MARK: Orientation‑Locking Container
     
     /// A container view controller that locks orientation to portrait.
     private class NoRotationViewController: UIViewController {
@@ -74,7 +72,7 @@ public final class TopNotchManager {
         }
     }
     
-    // MARK: – Public Methods
+    // MARK: Public Methods
     
     /// Shows the notch view using an optional custom view and configuration.
     ///
@@ -154,7 +152,7 @@ public final class TopNotchManager {
         }
     }
     
-    // MARK: – Private Helpers
+    // MARK: Private Helpers
     
     /// Creates a default notch view with a red tint.
     private func createDefaultNotchView() -> UIView {
@@ -264,7 +262,7 @@ public final class TopNotchManager {
         view.layer.mask = maskLayer
     }
     
-    // MARK: – Task Switcher Notifications
+    // MARK: Task Switcher Notifications
     
     @objc private func sceneWillDeactivateNotification(_ notification: Notification) {
         if config.shouldHideForTaskSwitcher && isNotchVisible {

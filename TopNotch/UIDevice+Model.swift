@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIDevice {
+package extension UIDevice {
     /// The model identifier for the device (e.g., "iPhone14,4").
     static let modelIdentifier: String = {
         if let simulatorModelIdentifier = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] {
