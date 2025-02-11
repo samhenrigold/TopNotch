@@ -1,32 +1,31 @@
 # ``TopNotch``
 
-![TopNotch. Hide a message under the notch. It'll be our little secret.](./Resources/banner.png)
+![TopNotch. Hide a message under the notch. It'll be our little secret.](./TopNotch/TopNotch.docc/Resources/banner.png)
 
 ## Overview
 
-TopNotch is a lightweight Swift package that lets developers hide a custom view underneath the device’s notch—ideal for displaying a watermark or secret message. It automatically calculates the notch’s exclusion area (using an undocumented `_exclusionArea` property on UIScreen) and applies manual, device-specific adjustments to ensure proper display across various iPhone models.
+TopNotch is a lil Swift package that lets you **hide a custom view underneath the device’s notch**. Since it’ll only be visible in screenshots and screen recordings, you can have some fun. **Put a version string in there**, maybe use it as a branding moment to **stick your logo there**, write your darkest secrets, whatever your little heart desires.
 
-> **Warning:** Because TopNotch relies on undocumented APIs, it may not be App Store safe.
+If you opt to actually write your little secrets there, you can set `shouldHideForTaskSwitcher` on `TopNotchConfiguration` to hide the view when `sceneWillDeactivateNotification` gets called. It'll come back after `sceneDidActivateNotification` is called or if you ask nicely. 
 
-## Features
+It automatically calculates the notch’s exclusion area (using an undocumented `_exclusionArea` property on UIScreen). Since it doesn't always return the right values for older notch styles, I'm applying some manual, device-specific adjustments to make sure it stays hidden on all devices.
 
-- **Automatic Exclusion Calculation:** Uses the device’s exclusion area to position your custom view.
-- **Device-Specific Adjustments:** Applies series overrides for iPhone13 and iPhone14 models (and can be further customized) to ensure correct sizing and rounded corner rendering.
-- **Customizable Appearance:** Supply your own view or use the default red‑tinted view.
-- **Task Switcher Handling:** Optionally hides the view when the task switcher is invoked.
+> [!WARNING]
+> Because TopNotch relies on undocumented APIs, it may not be App Store safe. Give it a shot though. I dare you.
 
-## Installation
-
-To integrate TopNotch into your project, add it via [Swift Package Manager](https://swift.org/package-manager/) or include the source files directly.
+## TODO
+- Reduce logging pollution
+- Make the SwiftUI adapter useful
+- Add screenshots here so people know what I'm talking about
 
 ## Usage
 
-In your code, simply call:
+I've attached a little demo project if that's how you roll. TL;DR:
 
 ```swift
 // Create a custom view (or use your own) to display behind the notch.
 let notchLabel = UILabel()
-notchLabel.text = "Top Notch"
+notchLabel.text = "Hi Mom"
 notchLabel.textAlignment = .center
 notchLabel.textColor = .white
 notchLabel.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.7)
@@ -38,3 +37,4 @@ TopNotchManager.shared.show(customView: notchLabel, with: TopNotchConfiguration(
 
 // To hide it:
 TopNotchManager.shared.hide()
+```
